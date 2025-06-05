@@ -1,54 +1,59 @@
+/* style.css (Version 2) */
+
 /* General body styling */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f3f4f6; /* Tailwind: bg-gray-100 (slightly different gray, using user's original) */
-    color: #1f2937; /* Tailwind: text-gray-800 (example) */
-    line-height: 1.6; /* Default line height for readability */
+    font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #f3f4f6; /* Corresponds to Tailwind's bg-gray-100 */
+    color: #1f2937; /* Corresponds to Tailwind's text-gray-800 */
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Modal base styles */
 .modal {
     display: none; /* Hidden by default */
     position: fixed;
-    inset: 0;
-    background-color: rgba(75, 85, 99, 0.5); /* Tailwind: bg-gray-600 bg-opacity-50 */
+    inset: 0; /* Tailwind: inset-0 */
+    background-color: rgba(31, 41, 55, 0.5); /* Tailwind: bg-gray-800 bg-opacity-50 (adjusted for a common dark overlay) */
     overflow-y: auto;
     align-items: center;
     justify-content: center;
-    padding: 1rem; /* p-4 */
-    z-index: 50; /* Ensure modal is on top */
+    padding: 1rem; /* Tailwind: p-4 */
+    z-index: 50; /* Ensure modal is on top, can be higher if needed e.g., z-50 */
 }
 
 .modal.active {
     display: flex; /* Show when active */
 }
 
-/* Custom scrollbar for better aesthetics */
+/* Custom scrollbar for better aesthetics (optional, browser-specific) */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Light gray track */
+    background: #e5e7eb; /* Tailwind: bg-gray-200 */
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;     /* Darker gray thumb */
+    background: #9ca3af; /* Tailwind: bg-gray-400 */
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;     /* Even darker on hover */
+    background: #6b7280; /* Tailwind: bg-gray-500 */
 }
 
 /* Responsive table container */
 .table-responsive {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
 }
 
-/* Base styling for form elements (translated from @apply) */
+/* Base styling for form elements (converted from previous @apply directives) */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -68,8 +73,8 @@ select {
     transition-property: border-color, box-shadow;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
-    font-size: 0.875rem; /* sm:text-sm (applied base for simplicity) */
-    line-height: 1.25rem; /* sm:text-sm (applied base for simplicity) */
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem; /* leading-tight (approx) */
 }
 
 input[type="text"]:focus,
@@ -81,27 +86,30 @@ textarea:focus,
 select:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    border-color: #6366f1; /* focus:border-indigo-500 */
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* Approximating focus:ring-indigo-500 */
+    border-color: #4f46e5; /* focus:border-indigo-600 (Tailwind v2/v3) */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4); /* Approximating focus:ring-indigo-500 focus:ring-opacity-50 */
 }
 
-/* Base button styling (translated from @apply) */
-/* Note: Generic button tag styling. Specific button styles are below. */
-button, .btn { /* Adding .btn as a common class for buttons if needed */
+/* Standardized button styling (using .btn class from HTML) */
+.btn {
+    display: inline-flex; /* For aligning icons and text */
+    align-items: center;
+    justify-content: center;
     border-radius: 0.375rem; /* rounded-md */
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-property: background-color, border-color, color, opacity, box-shadow, transform;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
-    font-weight: 600; /* font-semibold (common for buttons) */
-    padding-top: 0.5rem;    /* py-2 (common for buttons) */
-    padding-bottom: 0.5rem; /* py-2 (common for buttons) */
-    padding-left: 1rem;     /* px-4 (common for buttons) */
-    padding-right: 1rem;    /* px-4 (common for buttons) */
-    border: 1px solid transparent; /* Ensure border for consistent sizing on hover/focus states */
+    font-weight: 600; /* font-semibold */
+    padding-top: 0.5rem;    /* py-2 */
+    padding-bottom: 0.5rem; /* py-2 */
+    padding-left: 1rem;     /* px-4 */
+    padding-right: 1rem;    /* px-4 */
+    border: 1px solid transparent;
+    cursor: pointer; /* Indicate clickable */
+    user-select: none; /* Prevent text selection on click */
 }
 
-/* Specific button styles (translated from @apply) */
 .btn-primary {
     background-color: #4f46e5; /* bg-indigo-600 */
     color: white;
@@ -109,44 +117,70 @@ button, .btn { /* Adding .btn as a common class for buttons if needed */
 .btn-primary:hover {
     background-color: #4338ca; /* hover:bg-indigo-700 */
 }
+.btn-primary:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4);
+}
+
 
 .btn-secondary {
     background-color: #e5e7eb; /* bg-gray-200 */
     color: #374151;    /* text-gray-700 */
-    border-color: #d1d5db; /* Adding a subtle border for better definition */
+    border-color: #d1d5db; /* Adding a subtle border */
 }
 .btn-secondary:hover {
     background-color: #d1d5db; /* hover:bg-gray-300 */
 }
+.btn-secondary:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(209, 213, 219, 0.5);
+}
 
-.btn-danger {
+
+.btn-danger { /* Not currently used but defined from previous versions */
     background-color: #ef4444; /* bg-red-500 */
     color: white;
 }
 .btn-danger:hover {
     background-color: #dc2626; /* hover:bg-red-600 */
 }
+.btn-danger:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4);
+}
 
 .btn-icon {
     padding: 0.5rem; /* p-2 */
     border-radius: 9999px; /* rounded-full */
     background-color: transparent;
-    color: #4b5563; /* Default text color, can be overridden by text-indigo-600 etc. in HTML */
+    color: #4b5563; /* Default icon color, can be overridden by text-indigo-600 etc. in HTML */
+    line-height: 1; /* Ensure icon is centered if it has weird line height */
 }
 .btn-icon:hover {
     background-color: #e5e7eb; /* hover:bg-gray-200 */
 }
+.btn-icon:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(229, 231, 235, 0.6); /* A light ring for icon buttons */
+}
 
-/* Additional Tailwind utility classes that might be used in JS-generated content or need emphasis */
+/* Specific color utilities that might be used by JS for dynamic styling if not using Tailwind classes directly */
 .text-indigo-600 { color: #4f46e5; }
-.hover\:text-indigo-900:hover { color: #3730a3; }
+.hover\:text-indigo-900:hover { color: #3730a3; } /* For JS-controlled hover states if needed */
 .text-red-600 { color: #dc2626; }
 .hover\:text-red-900:hover { color: #991b1b; }
 .text-blue-600 { color: #2563eb; }
 .hover\:text-blue-900:hover { color: #1e3a8a; }
 .text-green-600 { color: #16a34a; }
 .text-yellow-600 { color: #ca8a04; }
+.text-purple-600 { color: #9333ea; } /* Added for 'หนี้สูญ' status */
 .font-semibold { font-weight: 600; }
+
+/* Screen-reader only utility (from Tailwind) */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -157,5 +191,27 @@ button, .btn { /* Adding .btn as a common class for buttons if needed */
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+/* Fix for Tailwind CDN potentially not applying antialiased to body automatically */
+.antialiased {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure modals are above other content like sticky header */
+#debtorModal, #paymentHistoryModal, #customConfirmModal {
+    z-index: 100; /* Higher than header's z-index: 40 */
+}
+
+/* Additional styling for payment history list for better readability */
+#paymentHistoryContent ul {
+    background-color: #f9fafb; /* Tailwind bg-gray-50 */
+}
+#paymentHistoryContent li {
+    border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+}
+#paymentHistoryContent li:last-child {
+    border-bottom: none;
 }
 
