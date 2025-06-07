@@ -1,4 +1,4 @@
-/* style.css (Version 2) */
+/* style.css (Version 3 - With Status Badges) */
 
 /* General body styling */
 body {
@@ -20,7 +20,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 1rem; /* Tailwind: p-4 */
-    z-index: 50; /* Ensure modal is on top, can be higher if needed e.g., z-50 */
+    z-index: 100; /* Higher z-index to be on top */
 }
 
 .modal.active {
@@ -53,7 +53,7 @@ body {
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
 }
 
-/* Base styling for form elements (converted from previous @apply directives) */
+/* Base styling for form elements */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -62,156 +62,137 @@ input[type="number"],
 textarea,
 select {
     width: 100%;
-    padding-left: 0.75rem; /* px-3 */
-    padding-right: 0.75rem; /* px-3 */
-    padding-top: 0.5rem;    /* py-2 */
-    padding-bottom: 0.5rem; /* py-2 */
-    border-width: 1px;
-    border-color: #d1d5db; /* border-gray-300 */
-    border-radius: 0.375rem; /* rounded-md */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    transition-property: border-color, box-shadow;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-    font-size: 0.875rem; /* text-sm */
-    line-height: 1.25rem; /* leading-tight (approx) */
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    font-size: 0.875rem;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="date"]:focus,
-input[type="number"]:focus,
-textarea:focus,
-select:focus {
+input:focus, textarea:focus, select:focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    border-color: #4f46e5; /* focus:border-indigo-600 (Tailwind v2/v3) */
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4); /* Approximating focus:ring-indigo-500 focus:ring-opacity-50 */
-}
-
-/* Standardized button styling (using .btn class from HTML) */
-.btn {
-    display: inline-flex; /* For aligning icons and text */
-    align-items: center;
-    justify-content: center;
-    border-radius: 0.375rem; /* rounded-md */
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-    transition-property: background-color, border-color, color, opacity, box-shadow, transform;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-    font-weight: 600; /* font-semibold */
-    padding-top: 0.5rem;    /* py-2 */
-    padding-bottom: 0.5rem; /* py-2 */
-    padding-left: 1rem;     /* px-4 */
-    padding-right: 1rem;    /* px-4 */
-    border: 1px solid transparent;
-    cursor: pointer; /* Indicate clickable */
-    user-select: none; /* Prevent text selection on click */
-}
-
-.btn-primary {
-    background-color: #4f46e5; /* bg-indigo-600 */
-    color: white;
-}
-.btn-primary:hover {
-    background-color: #4338ca; /* hover:bg-indigo-700 */
-}
-.btn-primary:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
+    border-color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4);
 }
 
+/* Standardized button styling */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 150ms ease-in-out;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    user-select: none;
+}
+
+.btn-primary {
+    background-color: #4f46e5; color: white;
+}
+.btn-primary:hover {
+    background-color: #4338ca;
+}
 
 .btn-secondary {
-    background-color: #e5e7eb; /* bg-gray-200 */
-    color: #374151;    /* text-gray-700 */
-    border-color: #d1d5db; /* Adding a subtle border */
+    background-color: #e5e7eb; color: #374151; border-color: #d1d5db;
 }
 .btn-secondary:hover {
-    background-color: #d1d5db; /* hover:bg-gray-300 */
-}
-.btn-secondary:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px rgba(209, 213, 219, 0.5);
-}
-
-
-.btn-danger { /* Not currently used but defined from previous versions */
-    background-color: #ef4444; /* bg-red-500 */
-    color: white;
-}
-.btn-danger:hover {
-    background-color: #dc2626; /* hover:bg-red-600 */
-}
-.btn-danger:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4);
+    background-color: #d1d5db;
 }
 
 .btn-icon {
-    padding: 0.5rem; /* p-2 */
-    border-radius: 9999px; /* rounded-full */
-    background-color: transparent;
-    color: #4b5563; /* Default icon color, can be overridden by text-indigo-600 etc. in HTML */
-    line-height: 1; /* Ensure icon is centered if it has weird line height */
+    padding: 0.5rem; border-radius: 9999px; background-color: transparent; line-height: 1;
 }
 .btn-icon:hover {
-    background-color: #e5e7eb; /* hover:bg-gray-200 */
-}
-.btn-icon:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px rgba(229, 231, 235, 0.6); /* A light ring for icon buttons */
+    background-color: #e5e7eb;
 }
 
-/* Specific color utilities that might be used by JS for dynamic styling if not using Tailwind classes directly */
-.text-indigo-600 { color: #4f46e5; }
-.hover\:text-indigo-900:hover { color: #3730a3; } /* For JS-controlled hover states if needed */
-.text-red-600 { color: #dc2626; }
-.hover\:text-red-900:hover { color: #991b1b; }
-.text-blue-600 { color: #2563eb; }
-.hover\:text-blue-900:hover { color: #1e3a8a; }
-.text-green-600 { color: #16a34a; }
-.text-yellow-600 { color: #ca8a04; }
-.text-purple-600 { color: #9333ea; } /* Added for 'หนี้สูญ' status */
-.font-semibold { font-weight: 600; }
-
-/* Screen-reader only utility (from Tailwind) */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+/* --- ✨ NEW: Status Badge Styles ✨ --- */
+/* Base style for all status badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem; /* Tailwind: py-1 px-2.5 */
+    font-size: 0.75rem;      /* text-xs */
+    font-weight: 600;        /* font-semibold */
+    line-height: 1;
+    text-align: center;
     white-space: nowrap;
-    border-width: 0;
+    vertical-align: baseline;
+    border-radius: 0.375rem; /* rounded-md */
+    border: 1px solid transparent;
 }
 
-/* Fix for Tailwind CDN potentially not applying antialiased to body automatically */
+/* ✅ Paid Status: Green */
+.status-paid {
+    color: #065f46;           /* text-green-800 */
+    background-color: #d1fae5; /* bg-green-100 */
+    border-color: #6ee7b7;   /* border-green-300 */
+}
+
+/* 🟥 Unpaid Status: Red */
+.status-unpaid {
+    color: #991b1b;           /* text-red-800 */
+    background-color: #fee2e2; /* bg-red-100 */
+    border-color: #fca5a5;   /* border-red-300 */
+}
+
+/* 🔥 Overdue Status: Brighter Red */
+.status-overdue {
+    color: #ffffff;           /* text-white */
+    background-color: #dc2626; /* bg-red-600 */
+    border-color: #b91c1c;   /* border-red-700 */
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+
+/* 🟦 Partially Paid Status: Blue */
+.status-partial {
+    color: #1e40af;           /* text-blue-800 */
+    background-color: #dbeafe; /* bg-blue-100 */
+    border-color: #93c5fd;   /* border-blue-300 */
+}
+
+/* 🟨 Due Today Status: Yellow */
+.status-due-today {
+    color: #854d0e;           /* text-yellow-800 */
+    background-color: #fef9c3; /* bg-yellow-100 */
+    border-color: #fde047;   /* border-yellow-300 */
+}
+
+/* 💀 Bad Debt Status: Gray */
+.status-bad-debt {
+    color: #374151;           /* text-gray-700 */
+    background-color: #e5e7eb; /* bg-gray-200 */
+    border-color: #d1d5db;   /* border-gray-300 */
+}
+
+/* Screen-reader only utility */
+.sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+}
+
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ensure modals are above other content like sticky header */
-#debtorModal, #paymentHistoryModal, #customConfirmModal {
-    z-index: 100; /* Higher than header's z-index: 40 */
-}
-
-/* Additional styling for payment history list for better readability */
 #paymentHistoryContent ul {
-    background-color: #f9fafb; /* Tailwind bg-gray-50 */
+    background-color: #f9fafb;
 }
 #paymentHistoryContent li {
-    border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+    border-bottom: 1px solid #e5e7eb;
 }
 #paymentHistoryContent li:last-child {
     border-bottom: none;
 }
-
