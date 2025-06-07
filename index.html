@@ -3,26 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการลูกหนี้</title>
+    <title>LookNee - ระบบจัดการลูกหนี้</title>
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Inter Font from Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="antialiased bg-gray-100">
+<body class="antialiased bg-gray-50 text-gray-800">
 
-    <!-- Global Message Container (for success/error notifications) -->
-    <div id="messageContainer" class="fixed top-5 right-5 z-50 w-auto max-w-sm"></div>
+    <!-- Global Message Container -->
+    <div id="messageContainer" class="fixed top-5 right-5 z-[150] w-auto max-w-sm"></div>
 
-    <!-- Authentication Section -->
-    <section id="authSection" class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-xl">
-            <img src="https://placehold.co/150x80/6366F1/FFFFFF?text=DebtApp&font=inter" alt="โลโก้ DebtApp" class="mx-auto mb-6 rounded" onerror="this.onerror=null;this.src='https://placehold.co/150x80/cccccc/333333?text=Logo+Error';">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">ระบบจัดการลูกหนี้</h2>
+    <!-- Auth Section -->
+    <section id="authSection" class="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
+        <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-2 font-sarabun">LookNee</h1>
+            <p class="text-center text-gray-500 mb-8">ระบบจัดการลูกหนี้ส่วนตัว</p>
 
             <!-- Login Form -->
             <form id="loginForm" class="space-y-4">
@@ -35,7 +37,7 @@
                     <input type="password" id="loginPassword" name="password" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="w-full btn btn-primary">เข้าสู่ระบบ</button>
-                <p class="text-center text-sm text-gray-600">
+                <p class="text-center text-sm text-gray-600 pt-2">
                     ยังไม่มีบัญชี? <a href="#" id="showRegisterLink" class="font-medium text-indigo-600 hover:text-indigo-500">ลงทะเบียนที่นี่</a>
                 </p>
             </form>
@@ -51,143 +53,189 @@
                     <input type="password" id="registerPassword" name="password" required autocomplete="new-password" minlength="6">
                 </div>
                 <button type="submit" class="w-full btn btn-primary">ลงทะเบียน</button>
-                <p class="text-center text-sm text-gray-600">
+                <p class="text-center text-sm text-gray-600 pt-2">
                     มีบัญชีแล้ว? <a href="#" id="showLoginLink" class="font-medium text-indigo-600 hover:text-indigo-500">เข้าสู่ระบบที่นี่</a>
                 </p>
             </form>
         </div>
+        <p class="text-center text-xs text-gray-500 mt-6">&copy; <span id="currentYearAuth"></span> LookNee App. For The Gooners.</p>
     </section>
 
-    <!-- Main Application Section (Hidden by default, shown after login) -->
-    <section id="appSection" style="display: none;" class="min-h-screen text-gray-800">
-        <!-- Header -->
-        <header class="bg-white shadow-md sticky top-0 z-40">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center">
-                         <img src="https://placehold.co/100x40/6366F1/FFFFFF?text=DebtApp&font=inter" alt="โลโก้ DebtApp ขนาดเล็ก" class="h-8 w-auto rounded" onerror="this.onerror=null;this.src='https://placehold.co/100x40/cccccc/333333?text=Logo+Error';">
-                        <h1 class="ml-3 text-xl font-semibold text-gray-800 hidden sm:block">ระบบจัดการลูกหนี้</h1>
-                    </div>
-                    <div class="flex items-center space-x-3 sm:space-x-4">
-                        <div class="text-sm text-gray-600 text-right">
-                            <span id="userEmailDisplay" class="block truncate max-w-[150px] sm:max-w-xs"></span>
-                            <span id="currentUserIdDisplay" class="text-xs text-gray-500 block truncate max-w-[150px] sm:max-w-xs"></span>
-                        </div>
-                        <button id="logoutButton" class="btn btn-secondary text-sm whitespace-nowrap"><i class="fas fa-sign-out-alt sm:mr-1"></i><span class="hidden sm:inline">ออกจากระบบ</span></button>
-                    </div>
-                </div>
+    <!-- Main Application Section -->
+    <section id="appSection" style="display: none;" class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="bg-white w-64 min-h-screen flex-shrink-0 shadow-lg border-r border-gray-200 p-4 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-[80]">
+            <div class="flex items-center gap-3 mb-10 px-2">
+                 <div class="bg-indigo-600 p-2 rounded-lg">
+                    <i class="fas fa-file-invoice-dollar text-white text-2xl"></i>
+                 </div>
+                 <h1 class="text-2xl font-bold text-gray-800 font-sarabun">LookNee</h1>
             </div>
-        </header>
 
-        <!-- Main Content Area -->
-        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
-            <!-- Dashboard Section -->
-            <section id="dashboardSection" class="mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                    <h3 class="text-base sm:text-lg font-medium text-gray-500">ลูกหนี้ทั้งหมด</h3>
-                    <p id="totalDebtorsStat" class="text-2xl sm:text-3xl font-bold text-indigo-600">0</p>
-                </div>
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                    <h3 class="text-base sm:text-lg font-medium text-gray-500">ยอดหนี้คงค้าง</h3>
-                    <p id="totalDebtAmountStat" class="text-2xl sm:text-3xl font-bold text-red-500">0.00 บาท</p>
-                </div>
-                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                    <h3 class="text-base sm:text-lg font-medium text-gray-500">ยอดชำระแล้ว</h3>
-                    <p id="totalPaidAmountStat" class="text-2xl sm:text-3xl font-bold text-green-500">0.00 บาท</p>
-                </div>
-                 <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg col-span-1 sm:col-span-2 lg:col-span-1">
-                    <h3 class="text-base sm:text-lg font-medium text-gray-500">ปฏิทินทวงหนี้</h3>
-                    <div id="calendarView" class="mt-2 text-xs sm:text-sm text-gray-700">
-                        <p class="text-gray-500 text-center py-2">กำลังโหลดปฏิทิน...</p>
+            <nav class="flex flex-col h-full">
+                <ul>
+                    <li class="mb-2">
+                        <a href="#" class="nav-link active"><i class="fas fa-tachometer-alt fa-fw w-6"></i>ภาพรวม</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="nav-link"><i class="fas fa-users fa-fw w-6"></i>รายการลูกหนี้</a>
+                    </li>
+                     <li class="mb-2">
+                        <a href="#" class="nav-link disabled-link" title="Coming Soon!"><i class="fas fa-chart-line fa-fw w-6"></i>รายงาน (เร็วๆ นี้)</a>
+                    </li>
+                </ul>
+                <div class="mt-auto">
+                    <div class="p-2 rounded-lg bg-gray-100 border border-gray-200">
+                         <div class="flex items-center gap-3">
+                             <img src="https://placehold.co/40x40/EFEFEE/333333?text=M&font=inter" alt="User Avatar" class="rounded-full w-10 h-10 border-2 border-white">
+                             <div class="text-sm overflow-hidden">
+                                <p id="userEmailDisplay" class="font-semibold text-gray-700 truncate"></p>
+                                <p id="currentUserIdDisplay" class="text-xs text-gray-500 truncate"></p>
+                             </div>
+                         </div>
                     </div>
+                     <button id="logoutButton" class="w-full mt-3 btn btn-secondary text-sm">
+                        <i class="fas fa-sign-out-alt mr-2"></i>ออกจากระบบ
+                    </button>
                 </div>
-            </section>
+            </nav>
+        </aside>
 
-            <!-- Debtor List Section -->
-            <section id="debtorListSection" class="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
-                <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                    <h2 class="text-xl sm:text-2xl font-semibold text-gray-800">รายการลูกหนี้</h2>
-                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
-                        <button id="addDebtorButton" class="btn btn-primary w-full sm:w-auto"><i class="fas fa-plus mr-2"></i>เพิ่มลูกหนี้</button>
-                        <button id="exportCsvButton" class="btn btn-secondary w-full sm:w-auto"><i class="fas fa-file-csv mr-2"></i>Export CSV</button>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Header -->
+            <header class="bg-white/60 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-40">
+                <div class="flex items-center justify-between h-16 px-6">
+                     <!-- Hamburger Menu for Mobile -->
+                    <button id="hamburgerButton" class="md:hidden text-2xl text-gray-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="hidden md:block">
+                        <h2 class="text-xl font-semibold text-gray-700 font-sarabun">ภาพรวม Dashboard</h2>
                     </div>
+                    <button id="addDebtorButton" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>เพิ่มลูกหนี้</button>
                 </div>
+            </header>
 
-                <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
-                    <div class="relative w-full sm:max-w-xs lg:max-w-sm">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
-                            <i class="fas fa-search"></i>
-                        </span>
-                        <input type="text" id="searchInput" placeholder="ค้นหาลูกหนี้ (ชื่อ, ติดต่อ)..." class="pl-10">
+            <!-- Content Area -->
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+                <!-- NEW: Smarter Dashboard Section -->
+                <section id="dashboardSection" class="mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+                        <!-- Card: Total Debt -->
+                        <div class="dashboard-card border-l-4 border-blue-500">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-medium text-gray-500 uppercase">ยอดหนี้คงค้างทั้งหมด</h3>
+                                <i class="fas fa-dollar-sign text-blue-500 text-2xl bg-blue-100 p-2 rounded-lg"></i>
+                            </div>
+                            <p id="totalDebtAmountStat" class="text-3xl font-bold text-gray-800 mt-2">0.00 บาท</p>
+                        </div>
+                        <!-- Card: Overdue -->
+                        <div class="dashboard-card border-l-4 border-red-500">
+                             <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-medium text-gray-500 uppercase">เลยกำหนดชำระ</h3>
+                                <i class="fas fa-exclamation-triangle text-red-500 text-2xl bg-red-100 p-2 rounded-lg"></i>
+                            </div>
+                            <p id="overdueStat" class="text-3xl font-bold text-gray-800 mt-2">0 คน</p>
+                            <p id="overdueAmountStat" class="text-sm text-red-600 font-medium">0.00 บาท</p>
+                        </div>
+                        <!-- Card: Due Today -->
+                        <div class="dashboard-card border-l-4 border-yellow-500">
+                             <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-medium text-gray-500 uppercase">ครบกำหนดวันนี้</h3>
+                                <i class="fas fa-calendar-day text-yellow-500 text-2xl bg-yellow-100 p-2 rounded-lg"></i>
+                            </div>
+                            <p id="dueTodayStat" class="text-3xl font-bold text-gray-800 mt-2">0 คน</p>
+                             <p id="dueTodayAmountStat" class="text-sm text-yellow-600 font-medium">0.00 บาท</p>
+                        </div>
+                         <!-- Card: Due Soon -->
+                        <div class="dashboard-card border-l-4 border-green-500">
+                             <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-medium text-gray-500 uppercase">ใกล้ครบกำหนด (7 วัน)</h3>
+                                <i class="fas fa-calendar-check text-green-500 text-2xl bg-green-100 p-2 rounded-lg"></i>
+                            </div>
+                            <p id="dueSoonStat" class="text-3xl font-bold text-gray-800 mt-2">0 คน</p>
+                             <p id="dueSoonAmountStat" class="text-sm text-green-600 font-medium">0.00 บาท</p>
+                        </div>
                     </div>
-                    <div class="w-full sm:w-auto">
-                        <label for="sortBySelect" class="sr-only">เรียงตาม:</label>
-                        <select id="sortBySelect" class="w-full sm:w-auto">
-                            <option value="name_asc">ชื่อ (ก-ฮ)</option>
-                            <option value="name_desc">ชื่อ (ฮ-ก)</option>
-                            <option value="amount_desc">ยอดหนี้ (มาก &gt; น้อย)</option>
-                            <option value="amount_asc">ยอดหนี้ (น้อย &gt; มาก)</option>
-                            <option value="dateDue_asc">ครบกำหนด (เร็ว &gt; ช้า)</option>
-                            <option value="dateDue_desc">ครบกำหนด (ช้า &gt; เร็ว)</option>
-                            <option value="status_asc">สถานะ (ก-ฮ)</option>
-                        </select>
+                </section>
+
+                <!-- Debtor List Section -->
+                <section id="debtorListSection" class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                        <h2 class="text-2xl font-semibold text-gray-800 font-sarabun">รายการลูกหนี้ทั้งหมด</h2>
+                         <div class="relative w-full md:max-w-xs">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" id="searchInput" placeholder="ค้นหา..." class="pl-10">
+                        </div>
                     </div>
-                </div>
 
-                <div class="table-responsive">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ชื่อ-นามสกุล</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ข้อมูลติดต่อ</th>
-                                <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">จำนวนเงิน</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่ยืม</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">กำหนดคืน</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">สถานะ</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">หมายเหตุ</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">อัปเดตล่าสุด</th>
-                                <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="debtorTableBody" class="bg-white divide-y divide-gray-200">
-                            <tr><td colspan="9" class="text-center py-10 text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i>กำลังโหลดข้อมูลลูกหนี้...</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
+                    <!-- NEW: Status Filter Buttons -->
+                    <div class="flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-gray-200">
+                        <span class="text-sm font-medium text-gray-600 mr-2">กรองตาม:</span>
+                        <button class="status-filter active" data-filter="all">ทั้งหมด</button>
+                        <button class="status-filter" data-filter="ยังไม่จ่าย">ยังไม่จ่าย</button>
+                        <button class="status-filter" data-filter="จ่ายบางส่วน">จ่ายบางส่วน</button>
+                        <button class="status-filter" data-filter="จ่ายแล้ว">จ่ายแล้ว</button>
+                        <button class="status-filter" data-filter="เลยกำหนด">เลยกำหนด</button>
+                        <button class="status-filter" data-filter="หนี้สูญ">หนี้สูญ</button>
+                    </div>
 
-        <!-- Footer -->
-        <footer class="text-center py-6 mt-10 border-t border-gray-200 bg-white">
-            <p class="text-sm text-gray-600">&copy; <span id="currentYear"></span> ระบบจัดการลูกหนี้. สร้างสรรค์โดยชาวปืนใหญ่ 🔴⚪.</p>
-        </footer>
+                    <div class="table-responsive">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="th-cell text-left">ชื่อ-นามสกุล</th>
+                                    <th scope="col" class="th-cell text-right">จำนวนเงิน</th>
+                                    <th scope="col" class="th-cell text-left">กำหนดคืน</th>
+                                    <th scope="col" class="th-cell text-left">สถานะ</th>
+                                    <th scope="col" class="th-cell text-left">อัปเดตล่าสุด</th>
+                                    <th scope="col" class="th-cell text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="debtorTableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- JS will populate this -->
+                                <tr><td colspan="6" class="text-center py-10 text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i>กำลังโหลดข้อมูล...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                 <!-- Footer -->
+                <footer class="text-center py-6 mt-10">
+                    <p class="text-sm text-gray-500">&copy; <span id="currentYear"></span> LookNee App. Proudly created by a Gooner.</p>
+                </footer>
+            </main>
+        </div>
     </section>
 
     <!-- Add/Edit Debtor Modal -->
-    <div id="debtorModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full items-center justify-center p-4 z-50">
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-lg mx-auto">
+    <div id="debtorModal" class="modal fixed inset-0 bg-gray-800 bg-opacity-70 overflow-y-auto h-full w-full items-start md:items-center justify-center p-4 z-[100]">
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-2xl mx-auto mt-10 md:mt-0">
             <div class="flex justify-between items-center p-5 border-b rounded-t">
-                <h3 id="debtorModalTitle" class="text-xl font-semibold text-gray-900">เพิ่มลูกหนี้ใหม่</h3>
+                <h3 id="debtorModalTitle" class="text-xl font-semibold text-gray-900 font-sarabun">เพิ่มลูกหนี้ใหม่</h3>
                 <button type="button" id="closeDebtorModalUpper" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
                     <i class="fas fa-times w-5 h-5"></i><span class="sr-only">ปิดหน้าต่าง</span>
                 </button>
             </div>
             <form id="debtorForm" class="p-6 space-y-4">
                 <div>
-                    <label for="debtorName" class="block mb-2 text-sm font-medium text-gray-900">ชื่อ-นามสกุล ลูกหนี้ <span class="text-red-500">*</span></label>
+                    <label for="debtorName" class="label-form">ชื่อ-นามสกุล ลูกหนี้ <span class="text-red-500">*</span></label>
                     <input type="text" id="debtorName" name="debtorName" required>
                 </div>
                 <div>
-                    <label for="debtorContact" class="block mb-2 text-sm font-medium text-gray-900">ข้อมูลติดต่อ (เบอร์โทร, อีเมล, ที่อยู่)</label>
+                    <label for="debtorContact" class="label-form">ข้อมูลติดต่อ (เบอร์โทร, อีเมล, ที่อยู่)</label>
                     <input type="text" id="debtorContact" name="debtorContact">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="debtorAmount" class="block mb-2 text-sm font-medium text-gray-900">จำนวนเงิน <span class="text-red-500">*</span></label>
+                        <label for="debtorAmount" class="label-form">จำนวนเงิน <span class="text-red-500">*</span></label>
                         <input type="number" id="debtorAmount" name="debtorAmount" step="0.01" required min="0">
                     </div>
                     <div>
-                        <label for="debtorCurrency" class="block mb-2 text-sm font-medium text-gray-900">สกุลเงิน</label>
+                        <label for="debtorCurrency" class="label-form">สกุลเงิน</label>
                         <select id="debtorCurrency" name="debtorCurrency">
                             <option value="THB" selected>บาท (THB)</option>
                             <option value="USD">ดอลลาร์สหรัฐ (USD)</option>
@@ -197,16 +245,16 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="debtorDateBorrowed" class="block mb-2 text-sm font-medium text-gray-900">วันที่ยืม <span class="text-red-500">*</span></label>
+                        <label for="debtorDateBorrowed" class="label-form">วันที่ยืม <span class="text-red-500">*</span></label>
                         <input type="date" id="debtorDateBorrowed" name="debtorDateBorrowed" required>
                     </div>
                     <div>
-                        <label for="debtorDateDue" class="block mb-2 text-sm font-medium text-gray-900">กำหนดคืน <span class="text-red-500">*</span></label>
+                        <label for="debtorDateDue" class="label-form">กำหนดคืน <span class="text-red-500">*</span></label>
                         <input type="date" id="debtorDateDue" name="debtorDateDue" required>
                     </div>
                 </div>
                 <div>
-                    <label for="debtorStatus" class="block mb-2 text-sm font-medium text-gray-900">สถานะ</label>
+                    <label for="debtorStatus" class="label-form">สถานะเริ่มต้น</label>
                     <select id="debtorStatus" name="debtorStatus">
                         <option value="ยังไม่จ่าย" selected>ยังไม่จ่าย</option>
                         <option value="จ่ายบางส่วน">จ่ายบางส่วน</option>
@@ -214,50 +262,71 @@
                         <option value="หนี้สูญ">หนี้สูญ</option>
                     </select>
                 </div>
-                <div>
-                    <label for="debtorNotes" class="block mb-2 text-sm font-medium text-gray-900">หมายเหตุ</label>
-                    <textarea id="debtorNotes" name="debtorNotes" rows="3" class="resize-y"></textarea>
+                 <!-- NEW: Attachment & Recurring Placeholders -->
+                <div class="pt-4 border-t border-gray-200 space-y-4">
+                     <div>
+                        <label for="debtorNotes" class="label-form">หมายเหตุ</label>
+                        <textarea id="debtorNotes" name="debtorNotes" rows="3" class="resize-y" placeholder="เช่น ค่าซ่อมรถ, ยืมซื้อของ..."></textarea>
+                    </div>
+                    <div>
+                        <label class="label-form">แนบไฟล์หลักฐาน (Coming Soon!)</label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-not-allowed bg-gray-50 opacity-60">
+                            <div class="space-y-1 text-center">
+                                <i class="fas fa-paperclip text-4xl text-gray-400 mx-auto"></i>
+                                <p class="text-xs text-gray-500">
+                                    ลากไฟล์มาวาง หรือ คลิกเพื่ออัปโหลด
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="isRecurring" name="isRecurring" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded cursor-not-allowed" disabled>
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="isRecurring" class="font-medium text-gray-500 cursor-not-allowed">เป็นหนี้รายเดือน/ recurring (Coming Soon!)</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center justify-end pt-4 border-t border-gray-200 rounded-b space-x-2">
-                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
                     <button type="button" id="cancelDebtorModal" class="btn btn-secondary">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Payment History Modal -->
-    <div id="paymentHistoryModal" class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full items-center justify-center p-4 z-50">
-        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-xl mx-auto">
-            <div class="flex justify-between items-center p-5 border-b rounded-t">
-                <h3 id="paymentModalTitle" class="text-xl font-semibold text-gray-900">ประวัติการชำระเงิน</h3>
+    <div id="paymentHistoryModal" class="modal fixed inset-0 bg-gray-800 bg-opacity-70 overflow-y-auto h-full w-full items-start md:items-center justify-center p-4 z-[110]">
+        <div class="relative bg-white rounded-lg shadow-xl w-full max-w-xl mx-auto mt-10 md:mt-0">
+             <div class="flex justify-between items-center p-5 border-b rounded-t">
+                <h3 id="paymentModalTitle" class="text-xl font-semibold text-gray-900 font-sarabun">ประวัติการชำระเงิน</h3>
                 <button type="button" id="closePaymentHistoryModalUpper" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
                     <i class="fas fa-times w-5 h-5"></i><span class="sr-only">ปิดหน้าต่าง</span>
                 </button>
             </div>
             <div class="p-6">
                 <form id="addPaymentForm" class="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50 space-y-3">
-                    <h4 class="text-md font-semibold text-gray-700">เพิ่มรายการชำระเงินใหม่</h4>
-                    <!-- Hidden input to store debtorId, will be set by JS -->
+                    <h4 class="text-md font-semibold text-gray-700 font-sarabun">เพิ่มรายการชำระเงินใหม่</h4>
                     <input type="hidden" id="paymentDebtorId" name="paymentDebtorId">
                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label for="paymentAmount" class="block text-sm font-medium text-gray-700">จำนวนเงินที่ชำระ <span class="text-red-500">*</span></label>
+                            <label for="paymentAmount" class="label-form">จำนวนเงินที่ชำระ <span class="text-red-500">*</span></label>
                             <input type="number" id="paymentAmount" name="paymentAmount" step="0.01" required min="0.01">
                         </div>
                         <div>
-                            <label for="paymentDate" class="block text-sm font-medium text-gray-700">วันที่ชำระ <span class="text-red-500">*</span></label>
+                            <label for="paymentDate" class="label-form">วันที่ชำระ <span class="text-red-500">*</span></label>
                             <input type="date" id="paymentDate" name="paymentDate" required>
                         </div>
                     </div>
                     <div>
-                        <label for="paymentNote" class="block text-sm font-medium text-gray-700">หมายเหตุ (ถ้ามี)</label>
+                        <label for="paymentNote" class="label-form">หมายเหตุ (ถ้ามี)</label>
                         <input type="text" id="paymentNote" name="paymentNote">
                     </div>
                     <button type="submit" class="btn btn-primary w-full sm:w-auto">บันทึกการชำระ</button>
                 </form>
                 <div id="paymentHistoryContent" class="text-sm">
-                    <!-- Payment history will be loaded here by JavaScript -->
+                    <!-- Payment history loads here -->
                 </div>
             </div>
             <div class="flex items-center justify-end p-4 border-t border-gray-200 rounded-b">
@@ -266,8 +335,19 @@
         </div>
     </div>
 
-    <!-- JavaScript File (defer ensures it runs after HTML is parsed) -->
-    <script src="script.js" type="module" defer></script>
+    <!-- Custom Confirm Modal -->
+    <div id="customConfirmModal" class="modal fixed inset-0 bg-gray-800 bg-opacity-60 overflow-y-auto h-full w-full items-center justify-center p-4 z-[120]">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-sm mx-auto p-6 text-center">
+            <i class="fas fa-exclamation-circle text-5xl text-yellow-400 mb-4"></i>
+            <p id="customConfirmMessage" class="text-gray-700 text-lg mb-6"></p>
+            <div class="flex justify-center space-x-4">
+                <button id="customConfirmCancel" class="btn btn-secondary flex-1">ยกเลิก</button>
+                <button id="customConfirmOk" class="btn btn-primary flex-1">ตกลง</button>
+            </div>
+        </div>
+    </div>
 
+
+    <script src="script.js" type="module"></script>
 </body>
 </html>
